@@ -10,7 +10,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.smartclassroom.Adapters.ViewPagerAdapter;
 import com.smartclassroom.R;
 
-public class SubjectsActivity extends AppCompatActivity {
+public class ViewActivity extends AppCompatActivity {
     TabLayout tabLayoutTop;
     TabItem tabItemSubjects, tabItemDevices;
     ViewPager viewPagerMain;

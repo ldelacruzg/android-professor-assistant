@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.SubjectsActivity">
+    tools:context=".Views.ViewActivity">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutTop"
@@ -18,13 +18,13 @@
             android:id="@+id/tabItemSubjects"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Materias" />
+            android:text="@string/subjects_label" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabItemDevices"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dispositivos" />
+            android:text="@string/devices_label" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager

@@ -7,18 +7,22 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
+import com.smartclassroom.Adapters.SubjectExpandableListAdapter;
 import com.smartclassroom.R;
-import com.smartclassroom.SubjectListItemAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SubjectsFragment extends Fragment {
     View view;
-    ListView listViewSubjects;
+
+    ExpandableListView listViewSubjects;
+    List<String> subjectListGroup;
+    Map<String, List<String>> subjectListGroupChild;
 
     public SubjectsFragment() {}
 
@@ -41,13 +45,27 @@ public class SubjectsFragment extends Fragment {
         listViewSubjects = view.findViewById(R.id.listViewSubjects);
     }
 
-    private List<String> getData() {
-        List<String> data = new ArrayList<>();
-        data.add("Programación Orientada a Objeto");
-        data.add("Aplicaciones Web");
-        data.add("Aplicaciones Móviles");
+    private Map<String, List<String>> getList() {
+        subjectListGroupChild = new HashMap<>();
+        for (String group : subjectListGroup()) {
+            subjectListGroupChild.put(group, new ArrayList<String>() {
+                {
+                    add("Students");
+                    add("Attendance");
+                }
+            });
+        }
 
-        return data;
+        return subjectListGroupChild;
+    }
+
+    private List<String> subjectListGroup() {
+        subjectListGroup = new ArrayList<>();
+        subjectListGroup.add("Programación Orientada a Objectos");
+        subjectListGroup.add("Aplicaciones Web");
+        subjectListGroup.add("Aplicaciones Móviles");
+
+        return subjectListGroup;
     }
 
     private void buildList() {
@@ -65,10 +83,21 @@ public class SubjectsFragment extends Fragment {
         */
 
         // Option 2 Custom Item
+        /*
         SubjectListItemAdapter adapter = new SubjectListItemAdapter(
                 getContext(),
-                R.layout.subject_list_item,
+                R.layout.subject_list_group_child,
                 getData()
+        );
+
+        listViewSubjects.setAdapter(adapter);
+         */
+
+        // Option 3 Expandable List View
+        SubjectExpandableListAdapter adapter = new SubjectExpandableListAdapter(
+                getContext(),
+                subjectListGroup(),
+                getList()
         );
 
         listViewSubjects.setAdapter(adapter);

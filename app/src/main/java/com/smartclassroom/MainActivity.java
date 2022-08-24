@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.smartclassroom.Views.SubjectsActivity;
+import com.smartclassroom.Views.ViewActivity;
 
 public class MainActivity extends AppCompatActivity {
     Button buttonLogin;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SubjectsActivity.class);
+                Intent intent = new Intent(MainActivity.this, ViewActivity.class);
                 startActivity(intent);
             }
         });
