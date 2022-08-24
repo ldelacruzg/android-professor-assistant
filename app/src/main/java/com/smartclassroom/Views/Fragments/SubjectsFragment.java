@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.smartclassroom.Adapters.SubjectExpandableListAdapter;
+import com.smartclassroom.Models.Subject;
+import com.smartclassroom.Models.Teacher;
 import com.smartclassroom.R;
 
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class SubjectsFragment extends Fragment {
     ExpandableListView listViewSubjects;
     List<String> subjectListGroup;
     Map<String, List<String>> subjectListGroupChild;
+
+    Teacher teacher = new Teacher("Orlando", "Erazo", "oerazo@uteq.edu.ec");
 
     public SubjectsFragment() {}
 
@@ -47,8 +51,8 @@ public class SubjectsFragment extends Fragment {
 
     private Map<String, List<String>> getList() {
         subjectListGroupChild = new HashMap<>();
-        for (String group : subjectListGroup()) {
-            subjectListGroupChild.put(group, new ArrayList<String>() {
+        for (Subject subject : subjectListGroup()) {
+            subjectListGroupChild.put(subject.getName(), new ArrayList<String>() {
                 {
                     add("Students");
                     add("Attendance");
@@ -59,13 +63,23 @@ public class SubjectsFragment extends Fragment {
         return subjectListGroupChild;
     }
 
-    private List<String> subjectListGroup() {
-        subjectListGroup = new ArrayList<>();
+    private List<Subject> subjectListGroup() {
+        /*subjectListGroup = new ArrayList<>();
         subjectListGroup.add("Programación Orientada a Objectos");
         subjectListGroup.add("Aplicaciones Web");
         subjectListGroup.add("Aplicaciones Móviles");
 
-        return subjectListGroup;
+        return subjectListGroup;*/
+
+        /*return new ArrayList<Teacher>() {{
+            add(new Teacher("Orlando", "Erazo", "oerazo@uteq.edu.ec"));
+        }};*/
+
+        return new ArrayList<Subject>() {{
+           add(new Subject("Object-oriented programming", teacher));
+           add(new Subject("Web Applications", teacher));
+           add(new Subject("Mobile Applications", teacher));
+        }};
     }
 
     private void buildList() {

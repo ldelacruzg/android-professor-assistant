@@ -2,25 +2,30 @@ package com.smartclassroom.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.smartclassroom.Models.Subject;
 import com.smartclassroom.Views.AttendancesActivity;
 import com.smartclassroom.Views.StudentsActivity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 public class SubjectExpandableListAdapter extends BaseExpandableListAdapter {
     Context context;
-    List<String> subjectListGroup;
+    List<Subject> subjectListGroup;
     Map<String, List<String>> subjectListGroupChild;
     OnItemClickListener onItemClickListener;
 
-    public SubjectExpandableListAdapter(Context context, List<String> subjectListGroup, Map<String, List<String>> subjectListGroupChild) {
+    public SubjectExpandableListAdapter(Context context, List<Subject> subjectListGroup, Map<String, List<String>> subjectListGroupChild) {
         this.context = context;
         this.subjectListGroup = subjectListGroup;
         this.subjectListGroupChild = subjectListGroupChild;
@@ -33,17 +38,17 @@ public class SubjectExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int i) {
-        return subjectListGroupChild.get(subjectListGroup.get(i)).size();
+        return subjectListGroupChild.get(subjectListGroup.get(i).getName()).size();
     }
 
     @Override
-    public Object getGroup(int i) {
+    public Subject getGroup(int i) {
         return subjectListGroup.get(i);
     }
 
     @Override
     public Object getChild(int i, int i1) {
-        return subjectListGroupChild.get(subjectListGroup.get(i)).get(i1);
+        return subjectListGroupChild.get(subjectListGroup.get(i).getName()).get(i1);
     }
 
     @Override
@@ -68,7 +73,7 @@ public class SubjectExpandableListAdapter extends BaseExpandableListAdapter {
                 .inflate(android.R.layout.simple_expandable_list_item_1, viewGroup, false);
 
         TextView textView = view.findViewById(android.R.id.text1);
-        textView.setText(getGroup(i).toString());
+        textView.setText(getGroup(i).getName());
 
         return view;
     }
@@ -87,14 +92,16 @@ public class SubjectExpandableListAdapter extends BaseExpandableListAdapter {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent;
+                Intent intent = null;
+                Gson gson = new Gson();
+
                 if (childName.equals("Students")) {
                     intent = new Intent(context, StudentsActivity.class);
                 } else if (childName.equals("Attendance")) {
                     intent = new Intent(context, AttendancesActivity.class);
-                } else {
-                    intent = null;
                 }
+
+                intent.putExtra("subject", gson.toJson(getGroup(i)));
                 context.startActivity(intent);
 
                 //Toast.makeText(view.getContext(), textView.getText(), Toast.LENGTH_SHORT).show();
