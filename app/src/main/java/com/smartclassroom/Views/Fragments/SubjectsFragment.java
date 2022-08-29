@@ -1,5 +1,6 @@
 package com.smartclassroom.Views.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,25 +9,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.smartclassroom.Adapters.SubjectExpandableListAdapter;
 import com.smartclassroom.Models.Subject;
 import com.smartclassroom.Models.Teacher;
 import com.smartclassroom.R;
+import com.smartclassroom.Utils.Global;
+import com.smartclassroom.Utils.RetrofitManager;
+import com.smartclassroom.Views.ViewActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SubjectsFragment extends Fragment {
     View view;
 
     ExpandableListView listViewSubjects;
-    List<String> subjectListGroup;
     Map<String, List<String>> subjectListGroupChild;
 
-    Teacher teacher = new Teacher("Orlando", "Erazo", "oerazo@uteq.edu.ec");
+    Teacher teacher;
 
     public SubjectsFragment() {}
 
@@ -39,8 +47,11 @@ public class SubjectsFragment extends Fragment {
         // init components
         initComponents();
 
+        // Recuperamos al profesor
+        //teacher = Global.GSON_INSTANCE.fromJson(getArguments().getString("teacher"), Teacher.class);
+
         // build list view
-        buildList();
+        buildExpandableList();
 
         return view;
     }
@@ -49,9 +60,13 @@ public class SubjectsFragment extends Fragment {
         listViewSubjects = view.findViewById(R.id.listViewSubjects);
     }
 
-    private Map<String, List<String>> getList() {
+    private void bindData() {
+
+    }
+
+    private Map<String, List<String>> getList(List<Subject> subjectListGroup) {
         subjectListGroupChild = new HashMap<>();
-        for (Subject subject : subjectListGroup()) {
+        for (Subject subject : subjectListGroup) {
             subjectListGroupChild.put(subject.getName(), new ArrayList<String>() {
                 {
                     add("Students");
@@ -63,7 +78,7 @@ public class SubjectsFragment extends Fragment {
         return subjectListGroupChild;
     }
 
-    private List<Subject> subjectListGroup() {
+    private void buildExpandableList() {
         /*subjectListGroup = new ArrayList<>();
         subjectListGroup.add("Programación Orientada a Objectos");
         subjectListGroup.add("Aplicaciones Web");
@@ -75,14 +90,32 @@ public class SubjectsFragment extends Fragment {
             add(new Teacher("Orlando", "Erazo", "oerazo@uteq.edu.ec"));
         }};*/
 
-        return new ArrayList<Subject>() {{
-           add(new Subject("Object-oriented programming", teacher));
-           add(new Subject("Web Applications", teacher));
-           add(new Subject("Mobile Applications", teacher));
-        }};
+        /*return new ArrayList<Subject>() {{
+            add(new Subject("Object-oriented programming"));
+            add(new Subject("Web Applications"));
+            add(new Subject("Mobile Applications"));
+        }};*/
+
+        Call<List<Subject>> subjectsByTeacher = RetrofitManager
+                .getSmartClassroomService()
+                .getSubjectsByTeacher("gleiston@gmail.com");
+        
+        subjectsByTeacher.enqueue(new Callback<List<Subject>>() {
+            @Override
+            public void onResponse(Call<List<Subject>> call, Response<List<Subject>> response) {
+                List<Subject> subjectList = response.body();
+                if (subjectList.size() > 0)
+                    buildList(subjectList, getList(subjectList));
+            }
+
+            @Override
+            public void onFailure(Call<List<Subject>> call, Throwable t) {
+
+            }
+        });
     }
 
-    private void buildList() {
+    private void buildList(List<Subject> subjectListGroup, Map<String, List<String>> subjectListGroupChild) {
         // Option 1 Simple Item
         // Adaptador, la forma en que mostraremos los datos (item)
         /*
@@ -110,8 +143,8 @@ public class SubjectsFragment extends Fragment {
         // Option 3 Expandable List View
         SubjectExpandableListAdapter adapter = new SubjectExpandableListAdapter(
                 getContext(),
-                subjectListGroup(),
-                getList()
+                subjectListGroup,
+                subjectListGroupChild
         );
 
         listViewSubjects.setAdapter(adapter);

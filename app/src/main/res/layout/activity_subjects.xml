@@ -31,6 +31,6 @@
         android:id="@+id/viewPagerMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tabLayoutTop"/>
+        android:layout_below="@+id/tabLayoutTop" />
 
 </RelativeLayout>

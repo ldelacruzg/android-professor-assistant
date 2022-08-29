@@ -1,13 +1,10 @@
 package com.smartclassroom.Models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,7 +13,17 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 public class Subject {
+    private int id;
+
+    @SerializedName("nombre")
     private final String name;
-    private final Teacher teacher;
+
+    @SerializedName("credito")
+    private int credits;
+
+    @SerializedName("usuarios")
     private List<Student> students;
+
+    @SerializedName("horarios")
+    private List<Schedule> schedules;
 }

@@ -13,9 +13,16 @@ import com.smartclassroom.Adapters.StudentListItemAdapter;
 import com.smartclassroom.Models.Student;
 import com.smartclassroom.Models.Subject;
 import com.smartclassroom.R;
+import com.smartclassroom.Utils.RetrofitManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StudentsActivity extends AppCompatActivity {
     TextView textViewSubjectName;
@@ -25,6 +32,7 @@ public class StudentsActivity extends AppCompatActivity {
 
     Gson gson = new Gson();
     Subject subject;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +42,10 @@ public class StudentsActivity extends AppCompatActivity {
 
         // Initial components
         initComponents();
+
+        // Subject Load from a Intent
+        bundle = getIntent().getExtras();
+        subject = gson.fromJson(bundle.getString("subject"), Subject.class);
 
         // Placing data in the components
         bindData();
@@ -49,12 +61,8 @@ public class StudentsActivity extends AppCompatActivity {
         // Set text Subject Name
         textViewSubjectName.setText(subject.getName());
 
-        // Subject Load from a Intent
-        Bundle bundle = getIntent().getExtras();
-        subject = gson.fromJson(bundle.getString("subject"), Subject.class);
-
         // Build recycler view
-        buildRecyclerView();
+        requestStudents();
     }
 
     private List<Student> getAllStudents() {
@@ -65,10 +73,33 @@ public class StudentsActivity extends AppCompatActivity {
         }};
     }
 
-    private void buildRecyclerView() {
+    private void buildRecyclerView(List<Student> studentList) {
         layoutManager = new LinearLayoutManager(this);
-        adapter = new StudentListItemAdapter(getAllStudents(), android.R.layout.simple_list_item_activated_2);
+        adapter = new StudentListItemAdapter(studentList, android.R.layout.simple_list_item_activated_2);
         recyclerViewStudents.setAdapter(adapter);
         recyclerViewStudents.setLayoutManager(layoutManager);
+    }
+
+    private void requestStudents() {
+        Call<Subject> subjectById = RetrofitManager.getSmartClassroomService().getSubjectById(subject.getId());
+        subjectById.enqueue(new Callback<Subject>() {
+            @Override
+            public void onResponse(Call<Subject> call, Response<Subject> response) {
+                List<Student> studentList = response.body().getStudents();
+                List<Student> list = new ArrayList<>();
+                for (Student student : studentList) {
+                    if (!student.getUserType().getName().equals("profesor")) {
+                        list.add(student);
+                    }
+                }
+                studentList = list;
+                buildRecyclerView(studentList);
+            }
+
+            @Override
+            public void onFailure(Call<Subject> call, Throwable t) {
+
+            }
+        });
     }
 }

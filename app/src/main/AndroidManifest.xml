@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.smartclassroom">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,15 +16,20 @@
         android:theme="@style/Theme.SmartClassroom"
         tools:targetApi="31">
         <activity
+            android:name=".Views.AttendanceDetailsActivity"
+            android:label="@string/attendance_activity_label"
+            android:parentActivityName=".Views.AttendancesActivity"
+            android:exported="false" />
+        <activity
             android:name=".Views.AttendancesActivity"
             android:exported="false"
-            android:parentActivityName=".Views.ViewActivity"
-            android:label="@string/attendance_activity_label"/>
+            android:label="@string/attendance_activity_label"
+            android:parentActivityName=".Views.ViewActivity" />
         <activity
             android:name=".Views.StudentsActivity"
             android:exported="false"
-            android:parentActivityName=".Views.ViewActivity"
-            android:label="@string/student_activity_label"/>
+            android:label="@string/student_activity_label"
+            android:parentActivityName=".Views.ViewActivity" />
         <activity
             android:name=".Views.ViewActivity"
             android:exported="false"

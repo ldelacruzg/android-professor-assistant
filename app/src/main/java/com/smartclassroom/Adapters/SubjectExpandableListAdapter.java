@@ -97,6 +97,7 @@ public class SubjectExpandableListAdapter extends BaseExpandableListAdapter {
 
                 if (childName.equals("Students")) {
                     intent = new Intent(context, StudentsActivity.class);
+                    // Deberia de pasarle el id o correo del profesor para buscar los estudiantes
                 } else if (childName.equals("Attendance")) {
                     intent = new Intent(context, AttendancesActivity.class);
                 }
