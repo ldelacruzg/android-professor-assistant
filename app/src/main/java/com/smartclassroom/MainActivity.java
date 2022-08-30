@@ -15,6 +15,7 @@ import com.smartclassroom.Models.Student;
 import com.smartclassroom.Models.Subject;
 import com.smartclassroom.Models.Teacher;
 import com.smartclassroom.Services.SmartClassroomService;
+import com.smartclassroom.Utils.Global;
 import com.smartclassroom.Utils.RetrofitManager;
 import com.smartclassroom.Views.ViewActivity;
 
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
+
+        editTextEmail.setText("gleiston@gmail.com");
+        editTextPassword.setText("123456789");
     }
 
     private boolean validateCredencials() {
@@ -78,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         // Acceso al Main
                         Intent intent = new Intent(MainActivity.this, ViewActivity.class);
                         intent.putExtra("teacher", gson.toJson(teacher));
+                        Global.LOGGED_TEACHER = teacher;
                         startActivity(intent);
                     } else {
                         Toast.makeText(MainActivity.this, "Invalid email or password...", Toast.LENGTH_SHORT).show();

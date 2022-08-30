@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.smartclassroom.Models.Subject;
+import com.smartclassroom.Utils.Global;
 import com.smartclassroom.Views.AttendancesActivity;
 import com.smartclassroom.Views.StudentsActivity;
 
@@ -103,6 +104,7 @@ public class SubjectExpandableListAdapter extends BaseExpandableListAdapter {
                 }
 
                 intent.putExtra("subject", gson.toJson(getGroup(i)));
+                Global.SELECTED_SUBJECT = getGroup(i);
                 context.startActivity(intent);
 
                 //Toast.makeText(view.getContext(), textView.getText(), Toast.LENGTH_SHORT).show();

@@ -3,8 +3,10 @@ package com.smartclassroom.Views.Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.NoCopySpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +58,14 @@ public class SubjectsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            teacher = Global.GSON_INSTANCE.fromJson(getArguments().getString("teacher"), Teacher.class);
+        }
+    }
+
     private void initComponents() {
         listViewSubjects = view.findViewById(R.id.listViewSubjects);
     }
@@ -79,27 +89,10 @@ public class SubjectsFragment extends Fragment {
     }
 
     private void buildExpandableList() {
-        /*subjectListGroup = new ArrayList<>();
-        subjectListGroup.add("Programación Orientada a Objectos");
-        subjectListGroup.add("Aplicaciones Web");
-        subjectListGroup.add("Aplicaciones Móviles");
-
-        return subjectListGroup;*/
-
-        /*return new ArrayList<Teacher>() {{
-            add(new Teacher("Orlando", "Erazo", "oerazo@uteq.edu.ec"));
-        }};*/
-
-        /*return new ArrayList<Subject>() {{
-            add(new Subject("Object-oriented programming"));
-            add(new Subject("Web Applications"));
-            add(new Subject("Mobile Applications"));
-        }};*/
-
         Call<List<Subject>> subjectsByTeacher = RetrofitManager
                 .getSmartClassroomService()
-                .getSubjectsByTeacher("gleiston@gmail.com");
-        
+                .getSubjectsByTeacher(Global.LOGGED_TEACHER.getEmail());
+
         subjectsByTeacher.enqueue(new Callback<List<Subject>>() {
             @Override
             public void onResponse(Call<List<Subject>> call, Response<List<Subject>> response) {

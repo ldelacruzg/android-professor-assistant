@@ -21,5 +21,6 @@
         android:id="@+id/recyclerViewStudents"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@android:layout/simple_list_item_activated_2" />
+        tools:listitem="@layout/student_list_item" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

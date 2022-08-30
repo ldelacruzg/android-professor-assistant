@@ -65,17 +65,9 @@ public class StudentsActivity extends AppCompatActivity {
         requestStudents();
     }
 
-    private List<Student> getAllStudents() {
-        return new ArrayList<Student>() {{
-            add(new Student("Luis", "De La Cruz", "ldelacruzg@uteq.edu.ec"));
-            add(new Student("Lino", "Alcivar", "lalcivard@uteq.edu.ec"));
-            add(new Student("Roberto", "Suarez", "rsuarez@uteq.edu.ec"));
-        }};
-    }
-
     private void buildRecyclerView(List<Student> studentList) {
         layoutManager = new LinearLayoutManager(this);
-        adapter = new StudentListItemAdapter(studentList, android.R.layout.simple_list_item_activated_2);
+        adapter = new StudentListItemAdapter(studentList, R.layout.student_list_item);
         recyclerViewStudents.setAdapter(adapter);
         recyclerViewStudents.setLayoutManager(layoutManager);
     }

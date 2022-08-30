@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.smartclassroom.Models.Student;
+import com.smartclassroom.R;
 
 import java.util.List;
 
@@ -56,8 +57,8 @@ public class StudentListItemAdapter extends RecyclerView.Adapter<StudentListItem
         }
 
         private void initComponents() {
-            text1 = itemView.findViewById(android.R.id.text1);
-            text2 = itemView.findViewById(android.R.id.text2);
+            text1 = itemView.findViewById(R.id.textViewFullName);
+            text2 = itemView.findViewById(R.id.textViewEmail);
         }
 
         public void bind(Student student) {

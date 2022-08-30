@@ -12,6 +12,7 @@ import com.smartclassroom.Adapters.AttendancesListItemAdapater;
 import com.smartclassroom.Models.Attendance;
 import com.smartclassroom.Models.Subject;
 import com.smartclassroom.R;
+import com.smartclassroom.Utils.Global;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,10 @@ public class AttendancesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
+        // init components
         initComponents();
+
+        bindData();
     }
 
     private void initComponents() {
@@ -40,12 +44,8 @@ public class AttendancesActivity extends AppCompatActivity {
     }
 
     private void bindData() {
-        // Recover Subject from Intent
-        bundle = getIntent().getExtras();
-        subject = gson.fromJson(bundle.getString("subject"), Subject.class);
-
         // Set text Subject name
-        textViewSubjectName.setText(subject.getName());
+        textViewSubjectName.setText(Global.SELECTED_SUBJECT.getName());
 
         // Build recycler view
         buildRecyclerView();
