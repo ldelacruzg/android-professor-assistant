@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -13,8 +14,14 @@ import com.smartclassroom.Models.Attendance;
 import com.smartclassroom.Models.Subject;
 import com.smartclassroom.R;
 import com.smartclassroom.Utils.Global;
+import com.smartclassroom.Utils.RetrofitManager;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AttendancesActivity extends AppCompatActivity {
     TextView textViewSubjectName;
@@ -22,10 +29,6 @@ public class AttendancesActivity extends AppCompatActivity {
     RecyclerView recyclerViewAttendances;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-
-    Bundle bundle;
-    Gson gson = new Gson();
-    Subject subject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,22 +51,46 @@ public class AttendancesActivity extends AppCompatActivity {
         textViewSubjectName.setText(Global.SELECTED_SUBJECT.getName());
 
         // Build recycler view
-        buildRecyclerView();
+        requestAttendanceList();
     }
 
-    private void buildRecyclerView() {
+    private void buildRecyclerView(List<Attendance> attendanceList) {
         layoutManager = new LinearLayoutManager(this);
         adapter = new AttendancesListItemAdapater(
-                android.R.layout.simple_list_item_activated_2,
-                new ArrayList<Attendance>(),
+                android.R.layout.simple_list_item_activated_1,
+                attendanceList,
                 new AttendancesListItemAdapater.OnItemClickListener() {
                     @Override
                     public void onItemClick(Attendance attendance, int position) {
-
+                        Intent intent = new Intent(AttendancesActivity.this, AttendanceDetailsActivity.class);
+                        intent.putExtra("attendance", Global.GSON_INSTANCE.toJson(attendance));
+                        startActivity(intent);
                     }
                 }
         );
+
         recyclerViewAttendances.setAdapter(adapter);
         recyclerViewAttendances.setLayoutManager(layoutManager);
+    }
+
+    private void requestAttendanceList() {
+        Call<List<Attendance>> allAttendancesBySubject = RetrofitManager
+                .getSmartClassroomService()
+                .getAllAttendancesBySubject(Global.SELECTED_SUBJECT.getId());
+
+        allAttendancesBySubject.enqueue(new Callback<List<Attendance>>() {
+            @Override
+            public void onResponse(Call<List<Attendance>> call, Response<List<Attendance>> response) {
+                List<Attendance> attendanceList = response.body();
+                if (attendanceList.size() > 0) {
+                    buildRecyclerView(attendanceList);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Attendance>> call, Throwable t) {
+
+            }
+        });
     }
 }

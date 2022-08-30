@@ -1,5 +1,6 @@
 package com.smartclassroom.Adapters;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.smartclassroom.Models.Attendance;
 
+import java.util.Date;
 import java.util.List;
 
 public class AttendancesListItemAdapater extends RecyclerView.Adapter<AttendancesListItemAdapater.ViewHolder> {
@@ -25,12 +27,13 @@ public class AttendancesListItemAdapater extends RecyclerView.Adapter<Attendance
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        holder.bind(attendances.get(position));
     }
 
     @Override
@@ -39,7 +42,7 @@ public class AttendancesListItemAdapater extends RecyclerView.Adapter<Attendance
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView text1, text2;
+        TextView text1;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -48,11 +51,17 @@ public class AttendancesListItemAdapater extends RecyclerView.Adapter<Attendance
 
         private void initComponents() {
             text1 = itemView.findViewById(android.R.id.text1);
-            text2 = itemView.findViewById(android.R.id.text2);
         }
 
         public void bind(Attendance attendance) {
-            //text1.setText(at);
+            text1.setText("Fecha: " + attendance.getOnlyDate() + " Hora: " + attendance.getOnlyTime());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(attendance, getAdapterPosition());
+                }
+            });
         }
     }
 

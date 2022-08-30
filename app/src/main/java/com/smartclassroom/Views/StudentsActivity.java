@@ -80,7 +80,8 @@ public class StudentsActivity extends AppCompatActivity {
                 List<Student> studentList = response.body().getStudents();
                 List<Student> list = new ArrayList<>();
                 for (Student student : studentList) {
-                    if (!student.getUserType().getName().equals("profesor")) {
+                    if (!student.getUserType().getName().equals("profesor")
+                            && !student.getUserType().getName().equals("administrador")) {
                         list.add(student);
                     }
                 }

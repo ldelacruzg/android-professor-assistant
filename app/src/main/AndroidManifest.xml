@@ -17,7 +17,7 @@
         tools:targetApi="31">
         <activity
             android:name=".Views.AttendanceDetailsActivity"
-            android:label="@string/attendance_activity_label"
+            android:label="Attendance"
             android:parentActivityName=".Views.AttendancesActivity"
             android:exported="false" />
         <activity

@@ -4,7 +4,7 @@
     <string name="input_password">Password</string>
     <string name="button_login">Log In</string>
     <string name="student_activity_label">Students</string>
-    <string name="attendance_activity_label">Attendance</string>
+    <string name="attendance_activity_label">Attendances</string>
     <string name="subjects_label">Subjects</string>
     <string name="devices_label">Devices</string>
 </resources>

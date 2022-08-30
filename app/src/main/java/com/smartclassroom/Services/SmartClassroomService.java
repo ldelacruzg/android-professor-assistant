@@ -1,5 +1,7 @@
 package com.smartclassroom.Services;
 
+import com.smartclassroom.Models.Attendance;
+import com.smartclassroom.Models.AttendanceDetail;
 import com.smartclassroom.Models.Subject;
 import com.smartclassroom.Models.Teacher;
 
@@ -21,4 +23,10 @@ public interface SmartClassroomService {
 
     @GET("materias/{id}")
     Call<Subject> getSubjectById(@Path("id") int id);
+
+    @GET("materias/{idSubject}/fecha-asistencia")
+    Call<List<Attendance>> getAllAttendancesBySubject(@Path("idSubject") int idSubject);
+
+    @GET("materias/{idSubject}/asistencias/{dateAttendance}")
+    Call<List<AttendanceDetail>> getStudentAttendances(@Path("idSubject") int idSubject, @Path("dateAttendance") String dateAttendance);
 }
