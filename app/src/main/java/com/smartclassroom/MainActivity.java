@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
 import com.smartclassroom.Models.Classroom;
 import com.smartclassroom.Models.Student;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     final String SMART_CLASSROOM_API_URL_BASE = "https://blooming-tundra-94814.herokuapp.com/api/";
     EditText editTextEmail, editTextPassword;
     Button buttonLogin;
+    LinearProgressIndicator progressIndicator;
 
     Gson gson = new Gson();
 
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
                 if (validateCredencials()) {
                     signIn();
                 } else {
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
+        progressIndicator = findViewById(R.id.progressIndicator);
 
         editTextEmail.setText("gleiston@gmail.com");
         editTextPassword.setText("123456789");
@@ -83,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, ViewActivity.class);
                         intent.putExtra("teacher", gson.toJson(teacher));
                         Global.LOGGED_TEACHER = teacher;
+                        progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
                         startActivity(intent);
                     } else {
                         Toast.makeText(MainActivity.this, "Invalid email or password...", Toast.LENGTH_SHORT).show();

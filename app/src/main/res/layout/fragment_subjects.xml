@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".Views.Fragments.SubjectsFragment">
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressIndicatorStudents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ExpandableListView
         android:id="@+id/listViewSubjects"
         android:layout_width="match_parent"

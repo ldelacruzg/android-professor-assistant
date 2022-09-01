@@ -3,15 +3,22 @@ package com.smartclassroom.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.smartclassroom.Models.AttendanceDetail;
 import com.smartclassroom.R;
+import com.smartclassroom.Utils.RetrofitManager;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AttendanceDetailsItemApapter extends RecyclerView.Adapter<AttendanceDetailsItemApapter.ViewHolder> {
     private List<AttendanceDetail> attendanceDetailList;
@@ -41,6 +48,7 @@ public class AttendanceDetailsItemApapter extends RecyclerView.Adapter<Attendanc
 
     class ViewHolder extends RecyclerView.ViewHolder{
         SwitchMaterial switchAttendance;
+        LinearProgressIndicator progressIndicator;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -49,11 +57,40 @@ public class AttendanceDetailsItemApapter extends RecyclerView.Adapter<Attendanc
 
         public void initComponents() {
             switchAttendance = itemView.findViewById(R.id.switchAttendance);
+            progressIndicator = itemView.findViewById(R.id.progressIndicator);
         }
 
         public void bind(AttendanceDetail attendanceDetail) {
             switchAttendance.setText(attendanceDetail.getFullName());
             switchAttendance.setChecked(attendanceDetail.isAttendance());
+
+            switchAttendance.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
+                    Call<Void> voidCall = RetrofitManager
+                            .getSmartClassroomService()
+                            .changeAttendance(attendanceDetail.getId(), !attendanceDetail.isAttendance());
+
+                    voidCall.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            if (response.code() == 200)
+                                Toast.makeText(view.getContext(), "Changed attendance...", Toast.LENGTH_SHORT).show();
+                            else {
+                                Toast.makeText(view.getContext(), "Unable to change attendance", Toast.LENGTH_SHORT).show();
+                                switchAttendance.setChecked(attendanceDetail.isAttendance());
+                            }
+                            progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+
+                        }
+                    });
+                }
+            });
         }
     }
 }

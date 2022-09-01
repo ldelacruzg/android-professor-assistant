@@ -99,15 +99,13 @@ public class SubjectExpandableListAdapter extends BaseExpandableListAdapter {
                 if (childName.equals("Students")) {
                     intent = new Intent(context, StudentsActivity.class);
                     // Deberia de pasarle el id o correo del profesor para buscar los estudiantes
-                } else if (childName.equals("Attendance")) {
+                } else if (childName.equals("Attendances")) {
                     intent = new Intent(context, AttendancesActivity.class);
                 }
 
                 intent.putExtra("subject", gson.toJson(getGroup(i)));
                 Global.SELECTED_SUBJECT = getGroup(i);
                 context.startActivity(intent);
-
-                //Toast.makeText(view.getContext(), textView.getText(), Toast.LENGTH_SHORT).show();
             }
         });
 

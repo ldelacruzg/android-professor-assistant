@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
 import com.smartclassroom.Adapters.StudentListItemAdapter;
 import com.smartclassroom.Models.Student;
@@ -16,9 +18,8 @@ import com.smartclassroom.R;
 import com.smartclassroom.Utils.RetrofitManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +30,7 @@ public class StudentsActivity extends AppCompatActivity {
     RecyclerView recyclerViewStudents;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
+    LinearProgressIndicator progressIndicatorStudents;
 
     Gson gson = new Gson();
     Subject subject;
@@ -55,6 +57,7 @@ public class StudentsActivity extends AppCompatActivity {
         // Components
         textViewSubjectName = findViewById(R.id.textViewSubjectName);
         recyclerViewStudents = findViewById(R.id.recyclerViewStudents);
+        progressIndicatorStudents = findViewById(R.id.progressIndicator);
     }
 
     private void bindData() {
@@ -73,8 +76,10 @@ public class StudentsActivity extends AppCompatActivity {
     }
 
     private void requestStudents() {
+        progressIndicatorStudents.setVisibility(LinearProgressIndicator.VISIBLE);
         Call<Subject> subjectById = RetrofitManager.getSmartClassroomService().getSubjectById(subject.getId());
         subjectById.enqueue(new Callback<Subject>() {
+            @SuppressLint("NewApi")
             @Override
             public void onResponse(Call<Subject> call, Response<Subject> response) {
                 List<Student> studentList = response.body().getStudents();
@@ -86,7 +91,9 @@ public class StudentsActivity extends AppCompatActivity {
                     }
                 }
                 studentList = list;
+                studentList.sort((e1, e2) -> e1.getLastname().compareTo(e2.getLastname()));
                 buildRecyclerView(studentList);
+                progressIndicatorStudents.setVisibility(LinearProgressIndicator.INVISIBLE);
             }
 
             @Override

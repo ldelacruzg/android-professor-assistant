@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
 import com.smartclassroom.Adapters.AttendancesListItemAdapater;
 import com.smartclassroom.Models.Attendance;
@@ -30,6 +31,8 @@ public class AttendancesActivity extends AppCompatActivity {
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
 
+    LinearProgressIndicator progressIndicator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,7 @@ public class AttendancesActivity extends AppCompatActivity {
     private void initComponents() {
         textViewSubjectName = findViewById(R.id.textViewSubjectNameInAttendance);
         recyclerViewAttendances = findViewById(R.id.recyclerViewAttendances);
+        progressIndicator = findViewById(R.id.progressIndicator);
     }
 
     private void bindData() {
@@ -74,6 +78,7 @@ public class AttendancesActivity extends AppCompatActivity {
     }
 
     private void requestAttendanceList() {
+        progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
         Call<List<Attendance>> allAttendancesBySubject = RetrofitManager
                 .getSmartClassroomService()
                 .getAllAttendancesBySubject(Global.SELECTED_SUBJECT.getId());
@@ -85,6 +90,7 @@ public class AttendancesActivity extends AppCompatActivity {
                 if (attendanceList.size() > 0) {
                     buildRecyclerView(attendanceList);
                 }
+                progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
             }
 
             @Override

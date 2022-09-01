@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.smartclassroom.Adapters.SubjectExpandableListAdapter;
 import com.smartclassroom.Models.Subject;
 import com.smartclassroom.Models.Teacher;
@@ -35,6 +36,7 @@ public class SubjectsFragment extends Fragment {
 
     ExpandableListView listViewSubjects;
     Map<String, List<String>> subjectListGroupChild;
+    LinearProgressIndicator progressIndicatorStudent;
 
     Teacher teacher;
 
@@ -68,6 +70,7 @@ public class SubjectsFragment extends Fragment {
 
     private void initComponents() {
         listViewSubjects = view.findViewById(R.id.listViewSubjects);
+        progressIndicatorStudent = view.findViewById(R.id.progressIndicatorStudents);
     }
 
     private void bindData() {
@@ -80,7 +83,7 @@ public class SubjectsFragment extends Fragment {
             subjectListGroupChild.put(subject.getName(), new ArrayList<String>() {
                 {
                     add("Students");
-                    add("Attendance");
+                    add("Attendances");
                 }
             });
         }
@@ -89,6 +92,7 @@ public class SubjectsFragment extends Fragment {
     }
 
     private void buildExpandableList() {
+        progressIndicatorStudent.setVisibility(LinearProgressIndicator.VISIBLE);
         Call<List<Subject>> subjectsByTeacher = RetrofitManager
                 .getSmartClassroomService()
                 .getSubjectsByTeacher(Global.LOGGED_TEACHER.getEmail());
@@ -99,6 +103,7 @@ public class SubjectsFragment extends Fragment {
                 List<Subject> subjectList = response.body();
                 if (subjectList.size() > 0)
                     buildList(subjectList, getList(subjectList));
+                progressIndicatorStudent.setVisibility(LinearProgressIndicator.INVISIBLE);
             }
 
             @Override

@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.smartclassroom.Adapters.AttendanceDetailsItemApapter;
 import com.smartclassroom.Models.Attendance;
 import com.smartclassroom.Models.AttendanceDetail;
@@ -15,6 +17,7 @@ import com.smartclassroom.Utils.Global;
 import com.smartclassroom.Utils.RetrofitManager;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -28,6 +31,8 @@ public class AttendanceDetailsActivity extends AppCompatActivity {
     RecyclerView recyclerViewStudentAttendance;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
+
+    LinearProgressIndicator progressIndicator;
 
     Bundle bundle;
     Attendance attendance;
@@ -52,6 +57,7 @@ public class AttendanceDetailsActivity extends AppCompatActivity {
         textViewSubjectNameInAttendanceDetails = findViewById(R.id.textViewSubjectNameInAttendanceDetails);
         textViewAttendanceDate = findViewById(R.id.textViewAttendanceDate);
         recyclerViewStudentAttendance = findViewById(R.id.recyclerViewStudentAttendance);
+        progressIndicator = findViewById(R.id.progressIndicator);
 
         bundle = getIntent().getExtras();
         attendance = Global.GSON_INSTANCE.fromJson(bundle.getString("attendance"), Attendance.class);
@@ -73,17 +79,21 @@ public class AttendanceDetailsActivity extends AppCompatActivity {
     }
 
     private void requestStudentAttendance() {
+        progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
         Call<List<AttendanceDetail>> studentAttendances = RetrofitManager
                 .getSmartClassroomService()
                 .getStudentAttendances(Global.SELECTED_SUBJECT.getId(), attendance.getOnlyDate());
 
         studentAttendances.enqueue(new Callback<List<AttendanceDetail>>() {
+            @SuppressLint("NewApi")
             @Override
             public void onResponse(Call<List<AttendanceDetail>> call, Response<List<AttendanceDetail>> response) {
                 List<AttendanceDetail> attendanceDetails = response.body();
                 if (attendanceDetails.size() > 0) {
+                    attendanceDetails.sort((e1,e2)-> e1.getFullName().compareTo(e2.getFullName()));
                     buildRecyclerView(attendanceDetails);
                 }
+                progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
             }
 
             @Override

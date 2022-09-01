@@ -62,7 +62,7 @@ public class StudentListItemAdapter extends RecyclerView.Adapter<StudentListItem
         }
 
         public void bind(Student student) {
-            text1.setText(student.getName() + " " + student.getLastname());
+            text1.setText(student.getLastname() + " " + student.getName());
             text2.setText(student.getEmail());
         }
     }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface SmartClassroomService {
@@ -29,4 +30,7 @@ public interface SmartClassroomService {
 
     @GET("materias/{idSubject}/asistencias/{dateAttendance}")
     Call<List<AttendanceDetail>> getStudentAttendances(@Path("idSubject") int idSubject, @Path("dateAttendance") String dateAttendance);
+
+    @PUT("materias/validar/{idAttendance}/{state}")
+    Call<Void> changeAttendance(@Path("idAttendance") int idAttendace, @Path("state") boolean state);
 }
