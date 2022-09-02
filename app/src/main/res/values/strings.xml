@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Smart Classroom</string>
+    <string name="app_name">Professor Assistant</string>
     <string name="input_email">Email</string>
     <string name="input_password">Password</string>
     <string name="button_login">Log In</string>

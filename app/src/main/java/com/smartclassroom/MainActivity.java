@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         Global.LOGGED_TEACHER = teacher;
                         progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
                         startActivity(intent);
+                        finish();
                     } else {
                         Toast.makeText(MainActivity.this, "Invalid email or password...", Toast.LENGTH_SHORT).show();
                     }

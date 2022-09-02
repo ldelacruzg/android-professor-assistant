@@ -16,10 +16,15 @@
         android:theme="@style/Theme.SmartClassroom"
         tools:targetApi="31">
         <activity
+            android:name=".Views.ProfileActivity"
+            android:exported="false"
+            android:label="Profile"
+            android:parentActivityName=".Views.ViewActivity"/>
+        <activity
             android:name=".Views.AttendanceDetailsActivity"
+            android:exported="false"
             android:label="Attendance"
-            android:parentActivityName=".Views.AttendancesActivity"
-            android:exported="false" />
+            android:parentActivityName=".Views.AttendancesActivity" />
         <activity
             android:name=".Views.AttendancesActivity"
             android:exported="false"
@@ -32,8 +37,7 @@
             android:parentActivityName=".Views.ViewActivity" />
         <activity
             android:name=".Views.ViewActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SmartClassroom" />
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
