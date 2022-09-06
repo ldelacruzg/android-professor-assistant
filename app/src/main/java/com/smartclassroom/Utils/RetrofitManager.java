@@ -1,5 +1,6 @@
 package com.smartclassroom.Utils;
 
+import com.smartclassroom.Services.SmartClassroomControl;
 import com.smartclassroom.Services.SmartClassroomService;
 
 import retrofit2.Retrofit;
@@ -14,5 +15,14 @@ public class RetrofitManager {
                 .build();
 
         return retrofit.create(SmartClassroomService.class);
+    }
+
+    public static SmartClassroomControl getSmartClassroomControl() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Global.SMART_CLASSROOM_CONTROL_URL_BASE)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(SmartClassroomControl.class);
     }
 }

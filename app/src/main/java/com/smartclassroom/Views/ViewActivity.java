@@ -18,6 +18,7 @@ import com.smartclassroom.Adapters.ViewPagerAdapter;
 import com.smartclassroom.Models.Teacher;
 import com.smartclassroom.R;
 import com.smartclassroom.Views.Dialogs.DialogProfile;
+import com.smartclassroom.Views.Fragments.ControlsFragment;
 import com.smartclassroom.Views.Fragments.DevicesFragment;
 import com.smartclassroom.Views.Fragments.SubjectsFragment;
 
@@ -56,6 +57,7 @@ public class ViewActivity extends AppCompatActivity {
         );
         viewPagerAdapter.addFragment(subjectsFragment, "Subjects");
         viewPagerAdapter.addFragment(new DevicesFragment(), "Devices");
+        viewPagerAdapter.addFragment(new ControlsFragment(), "Controls");
 
         viewPagerMain.setAdapter(viewPagerAdapter);
     }
