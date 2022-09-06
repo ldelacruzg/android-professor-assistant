@@ -2,6 +2,7 @@ package com.smartclassroom.Services;
 
 import com.smartclassroom.Models.Attendance;
 import com.smartclassroom.Models.AttendanceDetail;
+import com.smartclassroom.Models.Device;
 import com.smartclassroom.Models.Subject;
 import com.smartclassroom.Models.Teacher;
 
@@ -33,4 +34,10 @@ public interface SmartClassroomService {
 
     @PUT("materias/validar/{idAttendance}/{state}")
     Call<Void> changeAttendance(@Path("idAttendance") int idAttendace, @Path("state") boolean state);
+
+    @GET("dispositivos/usuario/{idUser}")
+    Call<List<Device>> getConfigDeviceByUser(@Path("idUser") int idUser);
+
+    @PUT("dispositivos/{idDevice}/{status}")
+    Call<Void> changeDeviceStatus(@Path("idDevice") int idDevice, @Path("status") boolean status);
 }
