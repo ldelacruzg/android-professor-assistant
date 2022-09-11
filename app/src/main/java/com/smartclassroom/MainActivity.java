@@ -15,9 +15,11 @@ import com.smartclassroom.Models.Classroom;
 import com.smartclassroom.Models.Student;
 import com.smartclassroom.Models.Subject;
 import com.smartclassroom.Models.Teacher;
+import com.smartclassroom.Models.User;
 import com.smartclassroom.Services.SmartClassroomService;
 import com.smartclassroom.Utils.Global;
 import com.smartclassroom.Utils.RetrofitManager;
+import com.smartclassroom.Views.Admin.AdminActivity;
 import com.smartclassroom.Views.ViewActivity;
 
 import java.util.ArrayList;
@@ -83,20 +85,30 @@ public class MainActivity extends AppCompatActivity {
                 if (teacher != null) {
                     // user exist
                     if (teacher.getPassword().equals(editTextPassword.getText().toString())) {
-                        // Acceso al Main
-                        Intent intent = new Intent(MainActivity.this, ViewActivity.class);
-                        intent.putExtra("teacher", gson.toJson(teacher));
-                        Global.LOGGED_TEACHER = teacher;
-                        progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Invalid email or password...", Toast.LENGTH_SHORT).show();
+                        if (teacher.getUserType().getName().equals("profesor")) {
+                            // Acceso al ViewActivity
+                            Intent intent = new Intent(MainActivity.this, ViewActivity.class);
+                            intent.putExtra("teacher", gson.toJson(teacher));
+                            Global.LOGGED_TEACHER = teacher;
+                            progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
+                            startActivity(intent);
+                            finish();
+                            return;
+                        } else if (teacher.getUserType().getName().equals("administrador")) {
+                            // Acceso al AdminActivity
+                            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                            Global.LOGGED_ADMIN = teacher;
+                            progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
+                            startActivity(intent);
+                            finish();
+                            return;
+                        }
                     }
-                } else {
-                    // uset not exist
-                    Toast.makeText(MainActivity.this, "Invalid email or password...", Toast.LENGTH_SHORT).show();
                 }
+
+                progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
+                // uset not exist
+                Toast.makeText(MainActivity.this, "Invalid email or password...", Toast.LENGTH_SHORT).show();
             }
 
             @Override

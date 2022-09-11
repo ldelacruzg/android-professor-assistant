@@ -16,10 +16,13 @@
         android:theme="@style/Theme.SmartClassroom"
         tools:targetApi="31">
         <activity
+            android:name=".Views.Admin.AdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".Views.ProfileActivity"
             android:exported="false"
             android:label="Profile"
-            android:parentActivityName=".Views.ViewActivity"/>
+            android:parentActivityName=".Views.ViewActivity" />
         <activity
             android:name=".Views.AttendanceDetailsActivity"
             android:exported="false"

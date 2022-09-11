@@ -18,6 +18,7 @@ public class RetrofitManager {
     }
 
     public static SmartClassroomControl getSmartClassroomControl() {
+        System.out.println("Devices ip =====>" + Global.SMART_CLASSROOM_CONTROL_URL_BASE);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Global.SMART_CLASSROOM_CONTROL_URL_BASE)
                 .addConverterFactory(GsonConverterFactory.create())
