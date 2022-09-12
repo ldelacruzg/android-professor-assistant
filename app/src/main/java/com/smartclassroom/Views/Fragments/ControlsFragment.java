@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -16,6 +18,7 @@ import com.smartclassroom.Models.SwitchingControl.LightControl;
 import com.smartclassroom.Models.SwitchingControl.SettingStatusControl;
 import com.smartclassroom.Models.SwitchingControl.SwitchingControl;
 import com.smartclassroom.R;
+import com.smartclassroom.Utils.Global;
 import com.smartclassroom.Utils.RetrofitManager;
 
 import retrofit2.Call;
@@ -32,6 +35,8 @@ public class ControlsFragment extends Fragment {
     ImageView imageViewLightControl, imageViewDoorControl, imageViewAirControl, imageViewProjectorControl;
     LinearProgressIndicator progressIndicator;
     SettingStatusControl lightSetting, doorSetting, airSetting, projectorSetting;
+    Button buttonRefreshControls;
+    TextView textViewIp;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,6 +87,8 @@ public class ControlsFragment extends Fragment {
         // init components
         initComponents();
 
+        setTextViewIp();
+
         // controls config
         lightSetting = new SettingStatusControl(
                 imageViewLightControl, R.drawable.ic_light_on, R.drawable.ic_light_off, R.drawable.ic_light
@@ -100,7 +107,16 @@ public class ControlsFragment extends Fragment {
         );
 
         // load controls status
-        loadControlStatus();
+        buttonRefreshControls.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Global.SMART_CLASSROOM_CONTROL_URL_BASE.contains("http")) {
+                    loadControlStatus();
+                } else {
+                    Toast.makeText(getContext(), "No server has been established", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         // controls events
         // light control
@@ -236,10 +252,18 @@ public class ControlsFragment extends Fragment {
         imageViewAirControl = view.findViewById(R.id.imageViewAirControl);
         imageViewProjectorControl = view.findViewById(R.id.imageViewProjectorControl);
         progressIndicator = view.findViewById(R.id.progressIndicator);
+        buttonRefreshControls = view.findViewById(R.id.buttonRefreshControls);
+        textViewIp = view.findViewById(R.id.textViewIp);
+    }
+
+    private void setTextViewIp() {
+        textViewIp.setText(Global.SMART_CLASSROOM_CONTROL_URL_BASE);
     }
 
     private void loadControlStatus() {
         progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
+        setTextViewIp();
+
         Call<ControlStatus> controlStatus = RetrofitManager
                 .getSmartClassroomControl()
                 .getControlStatus();

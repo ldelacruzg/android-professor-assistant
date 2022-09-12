@@ -26,9 +26,9 @@ public interface SmartClassroomControl {
     @GET("/proyector/")
     Call<SwitchingControl> switchingProjector();
 
-    @POST("/fingerprint/{userEmail}")
+    @GET("/registrar/{userEmail}")
     Call<Void> registerFingerprint(@Path("userEmail") String userEmail);
 
-    @DELETE("/fingerprint/{userEmail}")
-    Call<Void> deleteFingerprint(@Path("userEmail") String userEmail);
+    @GET("/eliminar-huella/{userId}")
+    Call<Void> deleteFingerprint(@Path("userId") int userId);
 }

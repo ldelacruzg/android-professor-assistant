@@ -6,7 +6,7 @@ import com.smartclassroom.Models.Teacher;
 
 public class Global {
     public static final String SMART_CLASSROOM_API_URL_BASE = "https://blooming-tundra-94814.herokuapp.com/api/";
-    public static String SMART_CLASSROOM_CONTROL_URL_BASE = "https://1155-190-214-123-208.ngrok.io/";
+    public static String SMART_CLASSROOM_CONTROL_URL_BASE = "https://b951-190-214-123-23.ngrok.io/";
     public static final Gson GSON_INSTANCE = new Gson();
     public static Teacher LOGGED_TEACHER = null;
     public static Teacher LOGGED_ADMIN = null;

@@ -10,6 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="0dp"
@@ -21,7 +30,7 @@
             android:hint="@string/input_email"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buttonRegisterFingerprint"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -29,13 +38,10 @@
             android:id="@+id/buttonRegisterFingerprint"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:text="Register"
-            app:layout_constraintEnd_toStartOf="@+id/buttonDeleteFingerprint"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextEmail" />
 
         <TextView
             android:id="@+id/textView2"
@@ -43,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:text="Control Fingerprint"
+            android:text="Registrar Fingerprint"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,13 +59,61 @@
             android:id="@+id/buttonDeleteFingerprint"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:text="Delete"
+            app:layout_constraintEnd_toEndOf="@+id/buttonSearchDelete"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSearchDelete" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Delete Fingerprint"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/editTextEmail"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+
+        <EditText
+            android:id="@+id/editTextEmailDelete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="@string/input_email"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSearchDelete"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <Button
+            android:id="@+id/buttonSearchDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="search"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/buttonRegisterFingerprint"
-            app:layout_constraintTop_toTopOf="@+id/buttonRegisterFingerprint" />
+            app:layout_constraintTop_toTopOf="@+id/editTextEmailDelete" />
+
+        <EditText
+            android:id="@+id/editTextUserIDDelete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:hint="User ID"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toStartOf="@+id/buttonDeleteFingerprint"
+            app:layout_constraintStart_toStartOf="@+id/editTextEmailDelete"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmailDelete" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

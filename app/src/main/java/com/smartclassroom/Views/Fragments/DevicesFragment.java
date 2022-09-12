@@ -128,7 +128,7 @@ public class DevicesFragment extends Fragment {
         buttonIpSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Global.SMART_CLASSROOM_CONTROL_URL_BASE = "http://" + editTextDeviceIp.getText().toString() + "/";
+                Global.SMART_CLASSROOM_CONTROL_URL_BASE = "http://" + editTextDeviceIp.getText().toString() + "/";
                 Toast.makeText(getContext(), "The device's IP was set", Toast.LENGTH_SHORT).show();
             }
         });

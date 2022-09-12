@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if (teacher.getUserType().getName().equals("administrador")) {
                             // Acceso al AdminActivity
                             Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-                            Global.LOGGED_ADMIN = teacher;
+                            Global.LOGGED_TEACHER = teacher;
                             progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
                             startActivity(intent);
                             finish();

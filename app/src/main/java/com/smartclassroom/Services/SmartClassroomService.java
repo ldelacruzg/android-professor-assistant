@@ -5,6 +5,7 @@ import com.smartclassroom.Models.AttendanceDetail;
 import com.smartclassroom.Models.Device;
 import com.smartclassroom.Models.Subject;
 import com.smartclassroom.Models.Teacher;
+import com.smartclassroom.Models.User;
 
 import java.util.List;
 
@@ -40,4 +41,7 @@ public interface SmartClassroomService {
 
     @PUT("dispositivos/{idDevice}/{status}")
     Call<Void> changeDeviceStatus(@Path("idDevice") int idDevice, @Path("status") boolean status);
+
+    @GET("usuarios/email/{userEmail}")
+    Call<User> getUserByEmail(@Path("userEmail") String userEmail);
 }

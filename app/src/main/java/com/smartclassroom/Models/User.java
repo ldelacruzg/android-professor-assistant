@@ -15,7 +15,7 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 public class User {
-    @SerializedName("id_usuario")
+    @SerializedName("id")
     private int id;
 
     @SerializedName("nombre")
