@@ -18,7 +18,7 @@ public class Subject {
     @SerializedName("nombre")
     private final String name;
 
-    @SerializedName("credito")
+    @SerializedName("creditos")
     private int credits;
 
     @SerializedName("usuarios")

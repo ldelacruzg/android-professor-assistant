@@ -89,12 +89,33 @@ public class AttendancesActivity extends AppCompatActivity {
                 List<Attendance> attendanceList = response.body();
                 if (attendanceList.size() > 0) {
                     buildRecyclerView(attendanceList);
+                    requestSubjectRefresh();
                 }
-                progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
             }
 
             @Override
             public void onFailure(Call<List<Attendance>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void requestSubjectRefresh() {
+        System.out.println("hola");
+        Call<Subject> subjectById = RetrofitManager
+                .getSmartClassroomService()
+                .getSubjectById(Global.SELECTED_SUBJECT.getId());
+
+        subjectById.enqueue(new Callback<Subject>() {
+            @Override
+            public void onResponse(Call<Subject> call, Response<Subject> response) {
+                Global.SELECTED_SUBJECT = response.body();
+                System.out.println("Refresh subject" + response.body().getSchedules());
+                progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<Subject> call, Throwable t) {
 
             }
         });
