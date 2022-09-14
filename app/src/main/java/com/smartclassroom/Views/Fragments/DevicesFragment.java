@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.smartclassroom.Adapters.DeviceListItemAdapter;
+import com.smartclassroom.Adapters.StudentListItemAdapter;
 import com.smartclassroom.Models.Device;
 import com.smartclassroom.R;
 import com.smartclassroom.Utils.Global;
@@ -30,10 +34,13 @@ import retrofit2.Response;
 
 public class DevicesFragment extends Fragment {
     View view;
-    SwitchMaterial switchLight, switchProjector, switchAir;
     Button buttonIpSync;
     EditText editTextDeviceIp;
-    LinearProgressIndicator progressIndicator;
+
+    // NEW
+    RecyclerView recyclerViewDevices;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,86 +51,8 @@ public class DevicesFragment extends Fragment {
         // init components
         initComponents();
 
-        // load config of devices
-        loadDeviceStatus();
-
-        switchLight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
-                Call<Void> changeDeviceStatus = RetrofitManager
-                        .getSmartClassroomService()
-                        .changeDeviceStatus(1, switchLight.isChecked());
-
-                changeDeviceStatus.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.code() == 200) {
-                            Toast.makeText(getContext(), "Device status changed", Toast.LENGTH_SHORT).show();
-                            Global.LOGGED_TEACHER.getDevices().get(0).setEnable(switchLight.isChecked());
-                        }
-                        progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-
-        switchAir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
-                Call<Void> changeDeviceStatus = RetrofitManager
-                        .getSmartClassroomService()
-                        .changeDeviceStatus(3, switchAir.isChecked());
-
-                changeDeviceStatus.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.code() == 200) {
-                            Toast.makeText(getContext(), "Device status changed", Toast.LENGTH_SHORT).show();
-                            Global.LOGGED_TEACHER.getDevices().get(1).setEnable(switchAir.isChecked());
-                        }
-                        progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-
-        switchProjector.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
-                Call<Void> changeDeviceStatus = RetrofitManager
-                        .getSmartClassroomService()
-                        .changeDeviceStatus(4, switchProjector.isChecked());
-
-                changeDeviceStatus.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.code() == 200) {
-                            Toast.makeText(getContext(), "Device status changed", Toast.LENGTH_SHORT).show();
-                            Global.LOGGED_TEACHER.getDevices().get(2).setEnable(switchProjector.isChecked());
-                        }
-                        progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
+        // build recycler view
+        buildRecyclerView();
 
         buttonIpSync.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,28 +66,16 @@ public class DevicesFragment extends Fragment {
     }
 
     private void initComponents() {
-        switchLight = view.findViewById(R.id.switchLight);
-        switchProjector = view.findViewById(R.id.switchProjector);
-        switchAir = view.findViewById(R.id.switchAir);
         buttonIpSync = view.findViewById(R.id.buttonIpSync);
         editTextDeviceIp = view.findViewById(R.id.editTextDeviceIp);
-        progressIndicator = view.findViewById(R.id.progressIndicator);
+
+        recyclerViewDevices = view.findViewById(R.id.recyclerViewDevices);
     }
 
-    @SuppressLint("NewApi")
-    private void loadDeviceStatus() {
-        Global.LOGGED_TEACHER.getDevices().forEach(el -> {
-            switch (el.getId()) {
-                case 1:
-                    switchLight.setChecked(el.isEnable());
-                    break;
-                case 3:
-                    switchAir.setChecked(el.isEnable());
-                    break;
-                case 4:
-                    switchProjector.setChecked(el.isEnable());
-                    break;
-            }
-        });
+    private void buildRecyclerView() {
+        layoutManager = new LinearLayoutManager(getContext());
+        adapter = new DeviceListItemAdapter(R.layout.device_list_item, Global.LOGGED_TEACHER.getDevices());
+        recyclerViewDevices.setAdapter(adapter);
+        recyclerViewDevices.setLayoutManager(layoutManager);
     }
 }

@@ -31,10 +31,12 @@ import retrofit2.Response;
 public class AttendanceDetailsItemApapter extends RecyclerView.Adapter<AttendanceDetailsItemApapter.ViewHolder> {
     private List<AttendanceDetail> attendanceDetailList;
     private int layout;
+    private boolean isEditable;
 
-    public AttendanceDetailsItemApapter(List<AttendanceDetail> attendanceDetailList, int layout) {
+    public AttendanceDetailsItemApapter(List<AttendanceDetail> attendanceDetailList, int layout, boolean isEditable) {
         this.attendanceDetailList = attendanceDetailList;
         this.layout = layout;
+        this.isEditable = isEditable;
     }
 
     @NonNull
@@ -73,14 +75,14 @@ public class AttendanceDetailsItemApapter extends RecyclerView.Adapter<Attendanc
         public void bind(AttendanceDetail attendanceDetail) {
             switchAttendance.setText(attendanceDetail.getFullName());
             switchAttendance.setChecked(attendanceDetail.isAttendance());
-
-            System.out.println("SUBJECTTTTT" + Global.SELECTED_SUBJECT);
+            switchAttendance.setEnabled(isEditable);
 
             // verificar si se puede modificar la asistencia
-            System.out.println("NUMEROOOOOOO"+Global.SELECTED_SUBJECT.getSchedules().size());
-            if (Global.SELECTED_SUBJECT.getSchedules().size() > 0) {
-                DayOfWeek dayOfWeek = LocalDateTime.now().getDayOfWeek();
-                System.out.println("Dia en letras " + dayOfWeek);
+            /*if (Global.SELECTED_SUBJECT.getSchedules().size() > 0) {
+                //DayOfWeek dayOfWeek = LocalDateTime.now().getDayOfWeek();
+                LocalDateTime currentDateTime = Schedule.getCurrentDateTime();
+                DayOfWeek dayOfWeek = currentDateTime.getDayOfWeek();
+                System.out.println("Fecha actual" + currentDateTime);
                 Schedule schedule = null;
 
                 for (Schedule el : Global.SELECTED_SUBJECT.getSchedules()) {
@@ -90,10 +92,12 @@ public class AttendanceDetailsItemApapter extends RecyclerView.Adapter<Attendanc
                     }
                 }
 
+                System.out.println("Es editable===> "+schedule.isEditable());
+
                 if (schedule == null || !schedule.isEditable()) {
                     switchAttendance.setEnabled(false);
                 }
-            }
+            }*/
 
             switchAttendance.setOnClickListener(new View.OnClickListener() {
                 @Override

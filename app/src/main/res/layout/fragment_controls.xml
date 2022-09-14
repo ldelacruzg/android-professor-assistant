@@ -73,8 +73,8 @@
 
                 <ImageView
                     android:id="@+id/imageViewLightControl"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_light" />
 
@@ -106,10 +106,10 @@
 
                 <ImageView
                     android:id="@+id/imageViewDoorControl"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_door" />
+                    android:src="@drawable/ic_door_on" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -137,12 +137,35 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/imageViewAirControl"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_air" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageViewAirControlLower"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_arrow_lower" />
+
+                    <ImageView
+                        android:id="@+id/imageViewAirControl"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_power" />
+
+                    <ImageView
+                        android:id="@+id/imageViewAirControlUp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_arrow_up" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -172,10 +195,10 @@
 
                 <ImageView
                     android:id="@+id/imageViewProjectorControl"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_projector" />
+                    android:src="@drawable/ic_projector_on" />
 
                 <TextView
                     android:layout_width="wrap_content"

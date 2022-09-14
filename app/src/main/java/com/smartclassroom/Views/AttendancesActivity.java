@@ -1,10 +1,12 @@
 package com.smartclassroom.Views;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -68,6 +70,7 @@ public class AttendancesActivity extends AppCompatActivity {
                     public void onItemClick(Attendance attendance, int position) {
                         Intent intent = new Intent(AttendancesActivity.this, AttendanceDetailsActivity.class);
                         intent.putExtra("attendance", Global.GSON_INSTANCE.toJson(attendance));
+                        Global.SELECTED_ATTENDANCE = attendance;
                         startActivity(intent);
                     }
                 }
@@ -84,10 +87,12 @@ public class AttendancesActivity extends AppCompatActivity {
                 .getAllAttendancesBySubject(Global.SELECTED_SUBJECT.getId());
 
         allAttendancesBySubject.enqueue(new Callback<List<Attendance>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<List<Attendance>> call, Response<List<Attendance>> response) {
                 List<Attendance> attendanceList = response.body();
                 if (attendanceList.size() > 0) {
+                    attendanceList.sort((t1, t2) -> t1.getOnlyDate().compareTo(t2.getOnlyDate()));
                     buildRecyclerView(attendanceList);
                     requestSubjectRefresh();
                 }

@@ -20,4 +20,7 @@ public class ControlStatus {
 
     @SerializedName("puerta")
     private int door;
+
+    @SerializedName("estado")
+    private int status;
 }

@@ -1,10 +1,12 @@
 package com.smartclassroom.Views;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -12,10 +14,13 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.smartclassroom.Adapters.AttendanceDetailsItemApapter;
 import com.smartclassroom.Models.Attendance;
 import com.smartclassroom.Models.AttendanceDetail;
+import com.smartclassroom.Models.Schedule;
 import com.smartclassroom.R;
 import com.smartclassroom.Utils.Global;
 import com.smartclassroom.Utils.RetrofitManager;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -71,11 +76,32 @@ public class AttendanceDetailsActivity extends AppCompatActivity {
     private void buildRecyclerView(List<AttendanceDetail> attendanceDetails) {
         layoutManager = new LinearLayoutManager(this);
         // adapter
-        adapter = new AttendanceDetailsItemApapter(attendanceDetails, R.layout.student_attendance_item);
+        adapter = new AttendanceDetailsItemApapter(attendanceDetails, R.layout.student_attendance_item, verifyAttendanceChange());
         // set adapter
         recyclerViewStudentAttendance.setAdapter(adapter);
         // set layout
         recyclerViewStudentAttendance.setLayoutManager(layoutManager);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean verifyAttendanceChange() {
+        // verificar si se puede modificar la asistencia
+        if (Global.SELECTED_SUBJECT.getSchedules().size() > 0) {
+            //DayOfWeek dayOfWeek = LocalDateTime.now().getDayOfWeek();
+            LocalDateTime currentDateTime = Schedule.getCurrentDateTime();
+            DayOfWeek dayOfWeek = currentDateTime.getDayOfWeek();
+            Schedule schedule = null;
+
+            for (Schedule el : Global.SELECTED_SUBJECT.getSchedules()) {
+                if (el.getLdtDate().getDayOfWeek().equals(dayOfWeek)) {
+                    schedule = el;
+                    break;
+                }
+            }
+
+            return schedule != null && schedule.isEditable();
+        }
+        return false;
     }
 
     private void requestStudentAttendance() {

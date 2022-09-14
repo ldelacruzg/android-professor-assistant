@@ -21,61 +21,22 @@ import com.smartclassroom.R;
 import com.smartclassroom.Utils.Global;
 import com.smartclassroom.Utils.RetrofitManager;
 
+import lombok.SneakyThrows;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ControlsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ControlsFragment extends Fragment {
     View view;
-    ImageView imageViewLightControl, imageViewDoorControl, imageViewAirControl, imageViewProjectorControl;
+    ImageView imageViewLightControl, imageViewDoorControl, imageViewAirControl, imageViewProjectorControl,
+        imageViewAirControlLower, imageViewAirControlUp;
     LinearProgressIndicator progressIndicator;
     SettingStatusControl lightSetting, doorSetting, airSetting, projectorSetting;
     Button buttonRefreshControls;
     TextView textViewIp;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public ControlsFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ControlsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ControlsFragment newInstance(String param1, String param2) {
-        ControlsFragment fragment = new ControlsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -111,7 +72,8 @@ public class ControlsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (Global.SMART_CLASSROOM_CONTROL_URL_BASE.contains("http")) {
-                    loadControlStatus();
+                    //loadControlStatus();
+                    requestLoadLightStatus();
                 } else {
                     Toast.makeText(getContext(), "No server has been established", Toast.LENGTH_SHORT).show();
                 }
@@ -152,28 +114,32 @@ public class ControlsFragment extends Fragment {
 
         // door control
         imageViewDoorControl.setOnClickListener(new View.OnClickListener() {
+            @SneakyThrows
             @Override
             public void onClick(View view) {
+                imageViewDoorControl.setImageResource(R.drawable.ic_door_off);
                 progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
-                Call<SwitchingControl> switchingDoor = RetrofitManager
+                Call<ControlStatus> switchingDoor = RetrofitManager
                         .getSmartClassroomControl()
-                        .switchingDoor();
+                        .openDoor();
 
-                switchingDoor.enqueue(new Callback<SwitchingControl>() {
+                switchingDoor.enqueue(new Callback<ControlStatus>() {
                     @Override
-                    public void onResponse(Call<SwitchingControl> call, Response<SwitchingControl> response) {
+                    public void onResponse(Call<ControlStatus> call, Response<ControlStatus> response) {
                         if (response.code() == 200) {
-                            SwitchingControl switchingControl = response.body();
-                            doorSetting.setStatus(switchingControl.getStatus());
-                            changeControlStatus(doorSetting, false);
+                            ControlStatus switchingControl = response.body();
+                            if (switchingControl.getStatus() == 1) {
+                                Toast.makeText(getContext(), "Door open", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
                         }
                         progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
+                        imageViewDoorControl.setImageResource(R.drawable.ic_door_on);
                     }
 
                     @Override
-                    public void onFailure(Call<SwitchingControl> call, Throwable t) {
+                    public void onFailure(Call<ControlStatus> call, Throwable t) {
                         Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
                         progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
                     }
@@ -186,6 +152,7 @@ public class ControlsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
+                imageViewAirControl.setImageResource(R.drawable.ic_power_off);
                 Call<SwitchingControl> switchingAir = RetrofitManager
                         .getSmartClassroomControl()
                         .switchingAir();
@@ -195,12 +162,16 @@ public class ControlsFragment extends Fragment {
                     public void onResponse(Call<SwitchingControl> call, Response<SwitchingControl> response) {
                         if (response.code() == 200) {
                             SwitchingControl switchingControl = response.body();
-                            airSetting.setStatus(switchingControl.getStatus());
-                            changeControlStatus(airSetting, true);
+                            if (switchingControl.getStatus() == 1) {
+                                Toast.makeText(getContext(), "Air On", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Air Off", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
                         }
                         progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
+                        imageViewAirControl.setImageResource(R.drawable.ic_power_on);
                     }
 
                     @Override
@@ -212,11 +183,26 @@ public class ControlsFragment extends Fragment {
             }
         });
 
+        imageViewAirControlLower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Bajar aire", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        imageViewAirControlUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Subir aire", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         // projector control
         imageViewProjectorControl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
+                imageViewProjectorControl.setImageResource(R.drawable.ic_projector_off);
                 Call<SwitchingControl> switchingProjector = RetrofitManager
                         .getSmartClassroomControl()
                         .switchingProjector();
@@ -226,12 +212,16 @@ public class ControlsFragment extends Fragment {
                     public void onResponse(Call<SwitchingControl> call, Response<SwitchingControl> response) {
                         if (response.code() == 200) {
                             SwitchingControl switchingControl = response.body();
-                            projectorSetting.setStatus(switchingControl.getStatus());
-                            changeControlStatus(projectorSetting, true);
+                            if (switchingControl.getStatus() == 1) {
+                                Toast.makeText(getContext(), "Projector On", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Projector Off", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
                         }
                         progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
+                        imageViewProjectorControl.setImageResource(R.drawable.ic_projector_on);
                     }
 
                     @Override
@@ -254,10 +244,42 @@ public class ControlsFragment extends Fragment {
         progressIndicator = view.findViewById(R.id.progressIndicator);
         buttonRefreshControls = view.findViewById(R.id.buttonRefreshControls);
         textViewIp = view.findViewById(R.id.textViewIp);
+
+        imageViewAirControlLower = view.findViewById(R.id.imageViewAirControlLower);
+        imageViewAirControlUp = view.findViewById(R.id.imageViewAirControlUp);
     }
 
     private void setTextViewIp() {
         textViewIp.setText(Global.SMART_CLASSROOM_CONTROL_URL_BASE);
+    }
+
+    private void requestLoadLightStatus() {
+        progressIndicator.setVisibility(LinearProgressIndicator.VISIBLE);
+        setTextViewIp();
+
+        Call<ControlStatus> lightStatus = RetrofitManager
+                .getSmartClassroomControl()
+                .getLightStatus();
+
+        lightStatus.enqueue(new Callback<ControlStatus>() {
+            @Override
+            public void onResponse(Call<ControlStatus> call, Response<ControlStatus> response) {
+                if (response.code() == 200) {
+                    ControlStatus controlStatus1 = response.body();
+
+                    lightSetting.setStatus(controlStatus1.getStatus());
+                    changeControlStatus(lightSetting, false);
+                } else {
+                    Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                }
+                progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<ControlStatus> call, Throwable t) {
+                String message = t.getMessage();
+            }
+        });
     }
 
     private void loadControlStatus() {
@@ -279,8 +301,8 @@ public class ControlsFragment extends Fragment {
                     changeControlStatus(lightSetting, false);
 
                     // init door status
-                    doorSetting.setStatus(controlStatus1.getDoor());
-                    changeControlStatus(doorSetting, false);
+                    //doorSetting.setStatus(controlStatus1.getDoor());
+                    //changeControlStatus(doorSetting, false);
 
                     // init air conditioning status 0=off
                     airSetting.setStatus(controlStatus1.getAir());

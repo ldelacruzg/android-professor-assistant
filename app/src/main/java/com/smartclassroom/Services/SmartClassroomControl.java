@@ -14,21 +14,30 @@ public interface SmartClassroomControl {
     @GET("/dispositivos/estados/")
     Call<ControlStatus> getControlStatus();
 
-    @GET("/luces/")
-    Call<LightControl> switchingLights();
-
     @GET("/puerta-accion/")
     Call<SwitchingControl> switchingDoor();
 
-    @GET("/aire/")
-    Call<SwitchingControl> switchingAir();
 
-    @GET("/proyector/")
-    Call<SwitchingControl> switchingProjector();
 
     @GET("/registrar/{userEmail}")
     Call<Void> registerFingerprint(@Path("userEmail") String userEmail);
 
     @GET("/eliminar-huella/{userId}")
     Call<Void> deleteFingerprint(@Path("userId") int userId);
+
+    /* NUEVOOO */
+    @POST("/puerta")
+    Call<ControlStatus> openDoor();
+
+    @GET("/luces-estado/")
+    Call<ControlStatus> getLightStatus();
+
+    @GET("/luces/")
+    Call<LightControl> switchingLights();
+
+    @GET("/proyector-encender/")
+    Call<SwitchingControl> switchingProjector();
+
+    @GET("/aire-encender/")
+    Call<SwitchingControl> switchingAir();
 }
