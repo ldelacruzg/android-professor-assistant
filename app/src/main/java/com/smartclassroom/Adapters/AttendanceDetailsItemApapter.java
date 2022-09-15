@@ -77,28 +77,6 @@ public class AttendanceDetailsItemApapter extends RecyclerView.Adapter<Attendanc
             switchAttendance.setChecked(attendanceDetail.isAttendance());
             switchAttendance.setEnabled(isEditable);
 
-            // verificar si se puede modificar la asistencia
-            /*if (Global.SELECTED_SUBJECT.getSchedules().size() > 0) {
-                //DayOfWeek dayOfWeek = LocalDateTime.now().getDayOfWeek();
-                LocalDateTime currentDateTime = Schedule.getCurrentDateTime();
-                DayOfWeek dayOfWeek = currentDateTime.getDayOfWeek();
-                System.out.println("Fecha actual" + currentDateTime);
-                Schedule schedule = null;
-
-                for (Schedule el : Global.SELECTED_SUBJECT.getSchedules()) {
-                    if (el.getLdtDate().getDayOfWeek().equals(dayOfWeek)) {
-                        schedule = el;
-                        break;
-                    }
-                }
-
-                System.out.println("Es editable===> "+schedule.isEditable());
-
-                if (schedule == null || !schedule.isEditable()) {
-                    switchAttendance.setEnabled(false);
-                }
-            }*/
-
             switchAttendance.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

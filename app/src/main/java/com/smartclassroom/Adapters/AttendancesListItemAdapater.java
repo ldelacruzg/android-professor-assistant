@@ -24,6 +24,14 @@ public class AttendancesListItemAdapater extends RecyclerView.Adapter<Attendance
         this.listener = listener;
     }
 
+    public List<Attendance> getAttendances() {
+        return attendances;
+    }
+
+    public void setAttendances(List<Attendance> attendances) {
+        this.attendances = attendances;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,7 +62,7 @@ public class AttendancesListItemAdapater extends RecyclerView.Adapter<Attendance
         }
 
         public void bind(Attendance attendance) {
-            text1.setText("Fecha: " + attendance.getOnlyDate() + " Hora: " + attendance.getOnlyTime());
+            text1.setText("Date: " + attendance.getOnlyDate() + " Time: " + attendance.getOnlyTime());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

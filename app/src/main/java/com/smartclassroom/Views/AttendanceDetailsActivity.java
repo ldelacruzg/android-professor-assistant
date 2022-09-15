@@ -70,13 +70,17 @@ public class AttendanceDetailsActivity extends AppCompatActivity {
 
     private void bindData() {
         textViewSubjectNameInAttendanceDetails.setText(Global.SELECTED_SUBJECT.getName());
-        textViewAttendanceDate.setText("Fecha: " + attendance.getOnlyDate() + " Hora: " + attendance.getOnlyTime());
+        textViewAttendanceDate.setText("Date: " + attendance.getOnlyDate() + " Time: " + attendance.getOnlyTime());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void buildRecyclerView(List<AttendanceDetail> attendanceDetails) {
         layoutManager = new LinearLayoutManager(this);
         // adapter
-        adapter = new AttendanceDetailsItemApapter(attendanceDetails, R.layout.student_attendance_item, verifyAttendanceChange());
+        adapter = new AttendanceDetailsItemApapter(attendanceDetails,
+                R.layout.student_attendance_item,
+                verifyAttendanceChange()
+        );
         // set adapter
         recyclerViewStudentAttendance.setAdapter(adapter);
         // set layout
