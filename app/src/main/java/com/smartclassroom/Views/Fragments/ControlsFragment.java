@@ -96,7 +96,7 @@ public class ControlsFragment extends Fragment {
                         if (response.code() == 200) {
                             LightControl lightControl = response.body();
                             lightSetting.setStatus(lightControl.getStatus());
-                            changeControlStatus(lightSetting, false);
+                            changeControlStatus(lightSetting, true);
                         } else {
                             Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
                         }
@@ -278,6 +278,7 @@ public class ControlsFragment extends Fragment {
             @Override
             public void onFailure(Call<ControlStatus> call, Throwable t) {
                 String message = t.getMessage();
+                progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
             }
         });
     }

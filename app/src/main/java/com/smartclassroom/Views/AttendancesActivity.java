@@ -175,6 +175,7 @@ public class AttendancesActivity extends AppCompatActivity {
                     buildRecyclerView(attendanceList);
                     requestSubjectRefresh();
                 }
+                progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
             }
 
             @Override
@@ -195,7 +196,6 @@ public class AttendancesActivity extends AppCompatActivity {
             public void onResponse(Call<Subject> call, Response<Subject> response) {
                 Global.SELECTED_SUBJECT = response.body();
                 System.out.println("Refresh subject" + response.body().getSchedules());
-                progressIndicator.setVisibility(LinearProgressIndicator.INVISIBLE);
             }
 
             @Override
