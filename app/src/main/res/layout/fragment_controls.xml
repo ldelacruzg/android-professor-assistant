@@ -144,13 +144,6 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/imageViewAirControlLower"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_arrow_lower" />
-
-                    <ImageView
                         android:id="@+id/imageViewAirControl"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
@@ -159,12 +152,6 @@
                         android:layout_centerInParent="true"
                         android:src="@drawable/ic_power" />
 
-                    <ImageView
-                        android:id="@+id/imageViewAirControlUp"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_arrow_up" />
                 </LinearLayout>
 
                 <TextView

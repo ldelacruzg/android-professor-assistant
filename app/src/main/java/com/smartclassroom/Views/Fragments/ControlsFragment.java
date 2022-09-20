@@ -183,6 +183,7 @@ public class ControlsFragment extends Fragment {
             }
         });
 
+        /*
         imageViewAirControlLower.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,6 +197,7 @@ public class ControlsFragment extends Fragment {
                 Toast.makeText(getContext(), "Subir aire", Toast.LENGTH_SHORT).show();
             }
         });
+        */
 
         // projector control
         imageViewProjectorControl.setOnClickListener(new View.OnClickListener() {
@@ -244,9 +246,6 @@ public class ControlsFragment extends Fragment {
         progressIndicator = view.findViewById(R.id.progressIndicator);
         buttonRefreshControls = view.findViewById(R.id.buttonRefreshControls);
         textViewIp = view.findViewById(R.id.textViewIp);
-
-        imageViewAirControlLower = view.findViewById(R.id.imageViewAirControlLower);
-        imageViewAirControlUp = view.findViewById(R.id.imageViewAirControlUp);
     }
 
     private void setTextViewIp() {
